@@ -63,6 +63,9 @@ def book(competition, club):
         if is_competition_past(comp_obj['date']):
             flash("Cannot book places for past competitions.")
             return render_template('welcome.html', club=club_obj, competitions=competitions)
+        if int(comp_obj['numberOfPlaces']) <= 0:
+            flash("This competition is full.")
+            return render_template('welcome.html', club=club_obj, competitions=competitions)
         return render_template('booking.html', club=club_obj, competition=comp_obj)
     else:
         flash("Something went wrong-please try again")
@@ -76,6 +79,10 @@ def purchasePlaces():
 
     if is_competition_past(competition['date']):
         flash("Cannot book places for past competitions.")
+        return render_template('welcome.html', club=club, competitions=competitions)
+
+    if int(competition['numberOfPlaces']) <= 0:
+        flash("This competition is full.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
     try:

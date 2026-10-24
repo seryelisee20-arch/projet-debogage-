@@ -76,3 +76,27 @@ def test_prevent_booking_non_integer_places(client):
     }, follow_redirects=True)
     assert response.status_code == 200
     assert b"Invalid number of places" in response.data
+
+
+def test_cannot_access_booking_for_full_competition(client):
+    comp = [c for c in server.competitions if c['name'] == 'Winter Championship'][0]
+    initial_places = comp['numberOfPlaces']
+    comp['numberOfPlaces'] = '0'
+    response = client.get('/book/Winter Championship/Simply Lift', follow_redirects=True)
+    comp['numberOfPlaces'] = initial_places
+    assert response.status_code == 200
+    assert b"This competition is full" in response.data
+
+
+def test_cannot_purchase_places_for_full_competition(client):
+    comp = [c for c in server.competitions if c['name'] == 'Winter Championship'][0]
+    initial_places = comp['numberOfPlaces']
+    comp['numberOfPlaces'] = '0'
+    response = client.post('/purchasePlaces', data={
+        'club': 'Simply Lift',
+        'competition': 'Winter Championship',
+        'places': '2'
+    }, follow_redirects=True)
+    comp['numberOfPlaces'] = initial_places
+    assert response.status_code == 200
+    assert b"This competition is full" in response.data
