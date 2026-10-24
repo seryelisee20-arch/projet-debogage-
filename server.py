@@ -77,7 +77,16 @@ def purchasePlaces():
     if is_competition_past(competition['date']):
         flash("Cannot book places for past competitions.")
         return render_template('welcome.html', club=club, competitions=competitions)
-    placesRequired = int(request.form['places'])
+
+    try:
+        placesRequired = int(request.form.get('places', 0))
+        if placesRequired <= 0:
+            flash("Please enter a positive number of places.")
+            return render_template('welcome.html', club=club, competitions=competitions)
+    except (ValueError, TypeError):
+        flash("Invalid number of places requested.")
+        return render_template('welcome.html', club=club, competitions=competitions)
+
     club_points = int(club['points'])
     competition_places = int(competition['numberOfPlaces'])
     already_booked = bookings_tracker.get((club['name'], competition['name']), 0)
