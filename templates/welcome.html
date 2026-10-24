@@ -1,40 +1,101 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Summary | GUDLFT Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-        <h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="brand">
+            <span class="brand-icon">G</span>
+            <span>GÜDLFT</span>
+        </a>
+        <nav class="nav-links">
+            <a href="{{ url_for('points') }}" class="nav-link">Leaderboard</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </nav>
+    </header>
 
-    {% with messages = get_flashed_messages()%}
-    {% if messages %}
-        <ul>
-       {% for message in messages %}
-            <li>{{message}}</li>
-        {% endfor %}
-       </ul>
-    {% endif%}
-    Points available: {{club['points']}}
-    <h3>Competitions:</h3>
-    <ul>
-        {% for comp in competitions%}
-        <li>
-            {{comp['name']}}<br />
-            Date: {{comp['date']}}</br>
-            Number of Places: {{comp['numberOfPlaces']}}
-            {% if comp['date'] | is_past %}
-                <span><em>(Event finished)</em></span>
-            {% elif comp['numberOfPlaces']|int > 0 %}
-                <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}">Book Places</a>
-            {% else %}
-                <span><em>(Full)</em></span>
+    <main class="container">
+        <div class="page-header">
+            <h2 class="page-title">Welcome, {{ club['email'] }}</h2>
+            <p class="page-subtitle">Club Portal for <strong>{{ club['name'] }}</strong></p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for message in messages %}
+                        <li class="flash-item">{{ message }}</li>
+                    {% endfor %}
+                </ul>
             {% endif %}
-        </li>
-        <hr />
-        {% endfor %}
-    </ul>
-    {%endwith%}
+        {% endwith %}
 
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-title">Club Points Balance</div>
+                    <div class="stat-value">{{ club['points'] }}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">Points available: {{ club['points'] }}</div>
+                </div>
+                <span class="stat-badge">Active Club</span>
+            </div>
+            <div class="stat-card">
+                <div>
+                    <div class="stat-title">Max Allowed Per Event</div>
+                    <div class="stat-value">12</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">Athletes quota rule</div>
+                </div>
+                <span class="stat-badge" style="background: #ecfdf5; color: #065f46;">Strict Quota</span>
+            </div>
+        </div>
+
+        <section class="competitions-section">
+            <h3 class="section-title">Competitions:</h3>
+            <div class="competitions-grid">
+                {% for comp in competitions %}
+                    {% set is_past = comp['date'] | is_past %}
+                    {% set places = comp['numberOfPlaces'] | int %}
+                    <div class="comp-card {% if is_past %}past-event{% endif %}">
+                        <div>
+                            <h4 class="comp-name">{{ comp['name'] }}</h4>
+                            <div class="comp-meta">
+                                <span>📅 Date: {{ comp['date'] }}</span>
+                            </div>
+                            <div class="comp-places">
+                                <span>Number of Places: {{ comp['numberOfPlaces'] }}</span>
+                                {% if is_past %}
+                                    <span class="places-badge places-empty">Finished</span>
+                                {% elif places == 0 %}
+                                    <span class="places-badge places-empty">Full</span>
+                                {% elif places <= 5 %}
+                                    <span class="places-badge places-low">{{ places }} places left</span>
+                                {% else %}
+                                    <span class="places-badge places-high">{{ places }} places left</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div>
+                            {% if is_past %}
+                                <span><em>(Event finished)</em></span>
+                            {% elif places > 0 %}
+                                <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="btn btn-primary btn-full">Book Places</a>
+                            {% else %}
+                                <span><em>(Full)</em></span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 GÜDLFT Weightlifting Association. All rights reserved.</p>
+    </footer>
 </body>
 </html>

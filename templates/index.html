@@ -1,26 +1,53 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GUDLFT Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Welcome to the GUDLFT Registration Portal!</h1>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    Please enter your secretary email to continue:
-    <form action="showSummary" method="post">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id=""/>
-        <button type="submit">Enter</button>
-    </form>
-    <p><a href="{{ url_for('points') }}">View Clubs Points Board</a></p>
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="brand">
+            <span class="brand-icon">G</span>
+            <span>GÜDLFT</span>
+        </a>
+        <nav class="nav-links">
+            <a href="{{ url_for('points') }}" class="nav-link">Leaderboard</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="form-card">
+            <h1 class="page-title">Welcome to the GUDLFT Registration Portal!</h1>
+            <p class="page-subtitle" style="margin-bottom: 1.5rem;">Please enter your secretary email to continue:</p>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flash-messages">
+                        {% for message in messages %}
+                            <li class="flash-item flash-error">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('showSummary') }}" method="post">
+                <div class="form-group">
+                    <label for="email" class="form-label">Secretary Email Address</label>
+                    <input type="email" name="email" id="email" class="form-input" placeholder="e.g. john@simplylift.co" required autofocus/>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Enter Portal</button>
+            </form>
+
+            <div style="margin-top: 1.5rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+                <a href="{{ url_for('points') }}" class="nav-link">View Clubs Points Board &rarr;</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 GÜDLFT Weightlifting Association. All rights reserved.</p>
+    </footer>
 </body>
 </html>
