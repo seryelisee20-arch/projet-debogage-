@@ -19,3 +19,18 @@ def test_prevent_booking_more_places_than_available_points(client):
     assert response.status_code == 200
     assert b"You do not have enough points" in response.data
     assert b"Points available: 4" in response.data
+
+
+def test_public_points_board_accessible_without_login(client):
+    response = client.get('/points')
+    assert response.status_code == 200
+    assert b"Clubs Points Summary" in response.data
+    assert b"Simply Lift" in response.data
+    assert b"Iron Temple" in response.data
+    assert b"She Lifts" in response.data
+
+
+def test_clubs_route_redirects_to_points(client):
+    response = client.get('/clubs', follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Clubs Points Summary" in response.data
