@@ -22,3 +22,8 @@ def test_can_access_booking_page_for_future_competition(client):
     assert response.status_code == 200
     assert b"Winter Championship" in response.data
     assert b"Places available: 20" in response.data
+
+
+def test_is_competition_past_invalid_date_format():
+    assert server.is_competition_past("invalid-date-format") is False
+    assert server.is_competition_past(None) is False
