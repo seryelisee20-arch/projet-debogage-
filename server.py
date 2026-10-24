@@ -53,10 +53,15 @@ def purchasePlaces():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
     club_points = int(club['points'])
-
+    competition_places = int(competition['numberOfPlaces'])
     already_booked = bookings_tracker.get((club['name'], competition['name']), 0)
+
     if placesRequired > 12 or (already_booked + placesRequired) > 12:
         flash("You cannot book more than 12 places per competition.")
+        return render_template('welcome.html', club=club, competitions=competitions)
+
+    if placesRequired > competition_places:
+        flash("Not enough places available in this competition.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
     if placesRequired > club_points:

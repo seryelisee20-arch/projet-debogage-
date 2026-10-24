@@ -31,3 +31,20 @@ def test_prevent_cumulative_booking_more_than_12_places(client):
     }, follow_redirects=True)
     assert response2.status_code == 200
     assert b"cannot book more than 12 places" in response2.data
+
+
+def test_prevent_booking_more_than_competition_capacity(client):
+    server.bookings_tracker.clear()
+    comp = [c for c in server.competitions if c['name'] == 'Fall Classic'][0]
+    initial_places = int(comp['numberOfPlaces'])
+    # Set capacity to 2 for test
+    comp['numberOfPlaces'] = '2'
+    response = client.post('/purchasePlaces', data={
+        'club': 'Simply Lift',
+        'competition': 'Fall Classic',
+        'places': '3'
+    }, follow_redirects=True)
+    # Restore original capacity
+    comp['numberOfPlaces'] = str(initial_places)
+    assert response.status_code == 200
+    assert b"Not enough places available in this competition" in response.data
