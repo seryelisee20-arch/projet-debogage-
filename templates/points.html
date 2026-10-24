@@ -4,28 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clubs Points Board | GUDLFT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Clubs Points Summary</h1>
-    <p>Public scoreboard displaying currently available points for all registered clubs.</p>
-    
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Club Name</th>
-                <th>Points Available</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for club in clubs %}
-            <tr>
-                <td>{{ club['name'] }}</td>
-                <td>{{ club['points'] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="brand">
+            <span class="brand-icon">G</span>
+            <span>GÜDLFT</span>
+        </a>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary" style="padding: 0.45rem 1rem;">Back to Login</a>
+        </nav>
+    </header>
 
-    <p><a href="{{ url_for('index') }}">Back to Login</a></p>
+    <main class="container">
+        <div class="page-header">
+            <h1 class="page-title">Clubs Points Summary</h1>
+            <p class="page-subtitle">Public, read-only scoreboard displaying real-time points available for all registered clubs.</p>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Rank</th>
+                        <th>Club Name</th>
+                        <th style="text-align: right;">Points Available</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for club in clubs %}
+                    <tr>
+                        <td class="club-rank">#{{ loop.index }}</td>
+                        <td>
+                            <strong>{{ club['name'] }}</strong>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">{{ club['email'] }}</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <span class="points-pill">{{ club['points'] }} pts</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">&larr; Back to Login</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 GÜDLFT Weightlifting Association. All rights reserved.</p>
+    </footer>
 </body>
 </html>
