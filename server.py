@@ -50,7 +50,7 @@ def showSummary():
     email = request.form.get('email', '').strip()
     matching_clubs = [club for club in clubs if club['email'] == email]
     if not matching_clubs:
-        flash("Sorry, that email was not found.")
+        flash("Désolé, cette adresse email est introuvable.")
         return render_template('index.html'), 401
     club = matching_clubs[0]
     return render_template('welcome.html', club=club, competitions=competitions)
@@ -64,14 +64,14 @@ def book(competition, club):
         club_obj = foundClub[0]
         comp_obj = foundCompetition[0]
         if is_competition_past(comp_obj['date']):
-            flash("Cannot book places for past competitions.")
+            flash("Impossible de réserver des places pour les compétitions passées.")
             return render_template('welcome.html', club=club_obj, competitions=competitions)
         if int(comp_obj['numberOfPlaces']) <= 0:
-            flash("This competition is full.")
+            flash("Cette compétition est complète.")
             return render_template('welcome.html', club=club_obj, competitions=competitions)
         return render_template('booking.html', club=club_obj, competition=comp_obj)
     else:
-        flash("Something went wrong-please try again")
+        flash("Une erreur est survenue, veuillez réessayer.")
         return redirect(url_for('index'))
 
 
@@ -81,20 +81,20 @@ def purchasePlaces():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
 
     if is_competition_past(competition['date']):
-        flash("Cannot book places for past competitions.")
+        flash("Impossible de réserver des places pour les compétitions passées.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
     if int(competition['numberOfPlaces']) <= 0:
-        flash("This competition is full.")
+        flash("Cette compétition est complète.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
     try:
         placesRequired = int(request.form.get('places', 0))
         if placesRequired <= 0:
-            flash("Please enter a positive number of places.")
+            flash("Veuillez saisir un nombre de places positif.")
             return render_template('welcome.html', club=club, competitions=competitions)
     except (ValueError, TypeError):
-        flash("Invalid number of places requested.")
+        flash("Nombre de places demandé invalide.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
     club_points = int(club['points'])
@@ -102,21 +102,21 @@ def purchasePlaces():
     already_booked = bookings_tracker.get((club['name'], competition['name']), 0)
 
     if placesRequired > 12 or (already_booked + placesRequired) > 12:
-        flash("You cannot book more than 12 places per competition.")
+        flash("Vous ne pouvez pas réserver plus de 12 places par compétition.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
     if placesRequired > competition_places:
-        flash("Not enough places available in this competition.")
+        flash("Il n'y a pas assez de places disponibles dans cette compétition.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
     if placesRequired > club_points:
-        flash("You do not have enough points to book these places.")
+        flash("Vous n'avez pas assez de points pour réserver ces places.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
     competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
     club['points'] = str(club_points - placesRequired)
     bookings_tracker[(club['name'], competition['name'])] = already_booked + placesRequired
-    flash('Great-booking complete!')
+    flash('Super, réservation effectuée avec succès !')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 

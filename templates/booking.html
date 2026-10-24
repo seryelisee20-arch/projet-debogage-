@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking for {{ competition['name'] }} || GUDLFT</title>
+    <title>Réservation pour {{ competition['name'] }} || GUDLFT</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -13,18 +13,18 @@
             <span>GÜDLFT</span>
         </a>
         <nav class="nav-links">
-            <a href="{{ url_for('points') }}" class="nav-link">Leaderboard</a>
-            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            <a href="{{ url_for('points') }}" class="nav-link">Classement</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Déconnexion</a>
         </nav>
     </header>
 
     <main class="container">
         <div class="form-card" style="max-width: 550px;">
             <div style="margin-bottom: 1.5rem;">
-                <span class="stat-badge" style="margin-bottom: 0.5rem; display: inline-block;">Booking for {{ club['name'] }}</span>
+                <span class="stat-badge" style="margin-bottom: 0.5rem; display: inline-block;">Réservation pour {{ club['name'] }}</span>
                 <h2 class="page-title">{{ competition['name'] }}</h2>
-                <p class="page-subtitle">Places available: {{ competition['numberOfPlaces'] }}</p>
-                <p class="page-subtitle" style="font-size: 0.95rem; margin-top: 0.25rem;">Your available points: <strong>{{ club['points'] }}</strong></p>
+                <p class="page-subtitle">Places disponibles : {{ competition['numberOfPlaces'] }}</p>
+                <p class="page-subtitle" style="font-size: 0.95rem; margin-top: 0.25rem;">Vos points disponibles : <strong>{{ club['points'] }}</strong></p>
             </div>
 
             {% with messages = get_flashed_messages() %}
@@ -42,23 +42,23 @@
                 <input type="hidden" name="competition" value="{{ competition['name'] }}">
                 
                 <div class="form-group">
-                    <label for="places" class="form-label">How many places?</label>
-                    <input type="number" name="places" id="places" class="form-input" min="1" max="12" placeholder="Between 1 and 12" required autofocus/>
+                    <label for="places" class="form-label">Combien de places souhaitez-vous réserver ?</label>
+                    <input type="number" name="places" id="places" class="form-input" min="1" max="12" placeholder="Entre 1 et 12" required autofocus/>
                     <small style="color: var(--text-muted); display: block; margin-top: 0.4rem; font-size: 0.85rem;">
-                        Note: 1 place = 1 club point. Maximum 12 places per club per competition.
+                        Remarque : 1 place = 1 point du club. Maximum 12 places par club et par compétition.
                     </small>
                 </div>
 
                 <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 2;">Confirm Booking</button>
-                    <a href="{{ url_for('showSummary') }}" onclick="history.back(); return false;" class="btn btn-secondary" style="flex: 1;">Cancel</a>
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">Confirmer la réservation</button>
+                    <a href="{{ url_for('showSummary') }}" onclick="history.back(); return false;" class="btn btn-secondary" style="flex: 1;">Annuler</a>
                 </div>
             </form>
         </div>
     </main>
 
     <footer class="footer">
-        <p>&copy; 2026 GÜDLFT Weightlifting Association. All rights reserved.</p>
+        <p>&copy; 2026 Association d'Haltérophilie GÜDLFT. Tous droits réservés.</p>
     </footer>
 </body>
 </html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GUDLFT Registration</title>
+    <title>Inscription GUDLFT</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -13,14 +13,14 @@
             <span>GÜDLFT</span>
         </a>
         <nav class="nav-links">
-            <a href="{{ url_for('points') }}" class="nav-link">Leaderboard</a>
+            <a href="{{ url_for('points') }}" class="nav-link">Classement</a>
         </nav>
     </header>
 
     <main class="container">
         <div class="form-card">
-            <h1 class="page-title">Welcome to the GUDLFT Registration Portal!</h1>
-            <p class="page-subtitle" style="margin-bottom: 1.5rem;">Please enter your secretary email to continue:</p>
+            <h1 class="page-title">Bienvenue sur le portail d'inscription GUDLFT !</h1>
+            <p class="page-subtitle" style="margin-bottom: 1.5rem;">Veuillez entrer l'adresse email de votre secrétaire pour continuer :</p>
 
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -34,20 +34,20 @@
 
             <form action="{{ url_for('showSummary') }}" method="post">
                 <div class="form-group">
-                    <label for="email" class="form-label">Secretary Email Address</label>
-                    <input type="email" name="email" id="email" class="form-input" placeholder="e.g. john@simplylift.co" required autofocus/>
+                    <label for="email" class="form-label">Adresse email du secrétaire</label>
+                    <input type="email" name="email" id="email" class="form-input" placeholder="ex. john@simplylift.co" required autofocus/>
                 </div>
-                <button type="submit" class="btn btn-primary btn-full">Enter Portal</button>
+                <button type="submit" class="btn btn-primary btn-full">Accéder au portail</button>
             </form>
 
             <div style="margin-top: 1.5rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
-                <a href="{{ url_for('points') }}" class="nav-link">View Clubs Points Board &rarr;</a>
+                <a href="{{ url_for('points') }}" class="nav-link">Consulter le tableau des points des clubs &rarr;</a>
             </div>
         </div>
     </main>
 
     <footer class="footer">
-        <p>&copy; 2026 GÜDLFT Weightlifting Association. All rights reserved.</p>
+        <p>&copy; 2026 Association d'Haltérophilie GÜDLFT. Tous droits réservés.</p>
     </footer>
 </body>
 </html>
