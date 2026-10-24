@@ -1,8 +1,8 @@
 def test_points_deduction_on_successful_booking(client):
-    # Simply Lift starts with 13 points, Spring Festival has places
+    # Simply Lift starts with 13 points, Winter Championship has places
     response = client.post('/purchasePlaces', data={
         'club': 'Simply Lift',
-        'competition': 'Spring Festival',
+        'competition': 'Winter Championship',
         'places': '3'
     }, follow_redirects=True)
     assert response.status_code == 200
@@ -13,7 +13,7 @@ def test_prevent_booking_more_places_than_available_points(client):
     # Iron Temple has 4 points. Attempting to book 6 places should fail.
     response = client.post('/purchasePlaces', data={
         'club': 'Iron Temple',
-        'competition': 'Spring Festival',
+        'competition': 'Winter Championship',
         'places': '6'
     }, follow_redirects=True)
     assert response.status_code == 200
