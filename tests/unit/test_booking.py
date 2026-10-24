@@ -37,14 +37,42 @@ def test_prevent_booking_more_than_competition_capacity(client):
     server.bookings_tracker.clear()
     comp = [c for c in server.competitions if c['name'] == 'Winter Championship'][0]
     initial_places = int(comp['numberOfPlaces'])
-    # Set capacity to 2 for test
     comp['numberOfPlaces'] = '2'
     response = client.post('/purchasePlaces', data={
         'club': 'Simply Lift',
         'competition': 'Winter Championship',
         'places': '3'
     }, follow_redirects=True)
-    # Restore original capacity
     comp['numberOfPlaces'] = str(initial_places)
     assert response.status_code == 200
     assert b"Not enough places available in this competition" in response.data
+
+
+def test_prevent_booking_negative_places(client):
+    response = client.post('/purchasePlaces', data={
+        'club': 'Simply Lift',
+        'competition': 'Winter Championship',
+        'places': '-3'
+    }, follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Please enter a positive number of places" in response.data
+
+
+def test_prevent_booking_zero_places(client):
+    response = client.post('/purchasePlaces', data={
+        'club': 'Simply Lift',
+        'competition': 'Winter Championship',
+        'places': '0'
+    }, follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Please enter a positive number of places" in response.data
+
+
+def test_prevent_booking_non_integer_places(client):
+    response = client.post('/purchasePlaces', data={
+        'club': 'Simply Lift',
+        'competition': 'Winter Championship',
+        'places': 'not_a_number'
+    }, follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Invalid number of places" in response.data
