@@ -27,6 +27,7 @@ app = Flask(__name__)
 app.secret_key = 'something_special'
 app.jinja_env.filters['is_past'] = is_competition_past
 
+
 def reset_data():
     global competitions, clubs, bookings_tracker
     competitions = loadCompetitions()
@@ -38,9 +39,11 @@ competitions = loadCompetitions()
 clubs = loadClubs()
 bookings_tracker = {}
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
@@ -129,4 +132,4 @@ def show_clubs():
 
 @app.route('/logout')
 def logout():
-    return redirect(url_for('index'))
+    return redirect(url_for('index'))
