@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary | GUDLFT Registration</title>
+    <title>Tableau de bord | Inscription GUDLFT</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -13,15 +13,15 @@
             <span>GÜDLFT</span>
         </a>
         <nav class="nav-links">
-            <a href="{{ url_for('points') }}" class="nav-link">Leaderboard</a>
-            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            <a href="{{ url_for('points') }}" class="nav-link">Classement</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Déconnexion</a>
         </nav>
     </header>
 
     <main class="container">
         <div class="page-header">
-            <h2 class="page-title">Welcome, {{ club['email'] }}</h2>
-            <p class="page-subtitle">Club Portal for <strong>{{ club['name'] }}</strong></p>
+            <h2 class="page-title">Bienvenue, {{ club['email'] }}</h2>
+            <p class="page-subtitle">Portail du club <strong>{{ club['name'] }}</strong></p>
         </div>
 
         {% with messages = get_flashed_messages() %}
@@ -37,24 +37,24 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div>
-                    <div class="stat-title">Club Points Balance</div>
+                    <div class="stat-title">Solde de points du club</div>
                     <div class="stat-value">{{ club['points'] }}</div>
-                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">Points available: {{ club['points'] }}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">Points disponibles : {{ club['points'] }}</div>
                 </div>
-                <span class="stat-badge">Active Club</span>
+                <span class="stat-badge">Club Actif</span>
             </div>
             <div class="stat-card">
                 <div>
-                    <div class="stat-title">Max Allowed Per Event</div>
+                    <div class="stat-title">Limite par compétition</div>
                     <div class="stat-value">12</div>
-                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">Athletes quota rule</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">Règle de quota d'athlètes</div>
                 </div>
-                <span class="stat-badge" style="background: #ecfdf5; color: #065f46;">Strict Quota</span>
+                <span class="stat-badge" style="background: #ecfdf5; color: #065f46;">Quota Strict</span>
             </div>
         </div>
 
         <section class="competitions-section">
-            <h3 class="section-title">Competitions:</h3>
+            <h3 class="section-title">Compétitions :</h3>
             <div class="competitions-grid">
                 {% for comp in competitions %}
                     {% set is_past = comp['date'] | is_past %}
@@ -63,29 +63,29 @@
                         <div>
                             <h4 class="comp-name">{{ comp['name'] }}</h4>
                             <div class="comp-meta">
-                                <span>📅 Date: {{ comp['date'] }}</span>
+                                <span>📅 Date : {{ comp['date'] }}</span>
                             </div>
                             <div class="comp-places">
-                                <span>Number of Places: {{ comp['numberOfPlaces'] }}</span>
+                                <span>Nombre de places : {{ comp['numberOfPlaces'] }}</span>
                                 {% if is_past %}
-                                    <span class="places-badge places-empty">Finished</span>
+                                    <span class="places-badge places-empty">Terminé</span>
                                 {% elif places == 0 %}
-                                    <span class="places-badge places-empty">Full</span>
+                                    <span class="places-badge places-empty">Complet</span>
                                 {% elif places <= 5 %}
-                                    <span class="places-badge places-low">{{ places }} places left</span>
+                                    <span class="places-badge places-low">{{ places }} places restantes</span>
                                 {% else %}
-                                    <span class="places-badge places-high">{{ places }} places left</span>
+                                    <span class="places-badge places-high">{{ places }} places restantes</span>
                                 {% endif %}
                             </div>
                         </div>
 
                         <div>
                             {% if is_past %}
-                                <span><em>(Event finished)</em></span>
+                                <span><em>(Événement terminé)</em></span>
                             {% elif places > 0 %}
-                                <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="btn btn-primary btn-full">Book Places</a>
+                                <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="btn btn-primary btn-full">Réserver des places</a>
                             {% else %}
-                                <span><em>(Full)</em></span>
+                                <span><em>(Complet)</em></span>
                             {% endif %}
                         </div>
                     </div>
@@ -95,7 +95,7 @@
     </main>
 
     <footer class="footer">
-        <p>&copy; 2026 GÜDLFT Weightlifting Association. All rights reserved.</p>
+        <p>&copy; 2026 Association d'Haltérophilie GÜDLFT. Tous droits réservés.</p>
     </footer>
 </body>
 </html>

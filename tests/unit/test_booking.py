@@ -9,7 +9,7 @@ def test_prevent_booking_more_than_12_places_single_purchase(client):
         'places': '13'
     }, follow_redirects=True)
     assert response.status_code == 200
-    assert b"cannot book more than 12 places" in response.data
+    assert "ne pouvez pas réserver plus de 12 places".encode('utf-8') in response.data
 
 
 def test_prevent_cumulative_booking_more_than_12_places(client):
@@ -21,7 +21,7 @@ def test_prevent_cumulative_booking_more_than_12_places(client):
         'places': '8'
     }, follow_redirects=True)
     assert response1.status_code == 200
-    assert b"Great-booking complete!" in response1.data
+    assert "réservation effectuée avec succès".encode('utf-8') in response1.data
 
     # Second booking: 5 places (8 + 5 = 13 > 12)
     response2 = client.post('/purchasePlaces', data={
@@ -30,7 +30,7 @@ def test_prevent_cumulative_booking_more_than_12_places(client):
         'places': '5'
     }, follow_redirects=True)
     assert response2.status_code == 200
-    assert b"cannot book more than 12 places" in response2.data
+    assert "ne pouvez pas réserver plus de 12 places".encode('utf-8') in response2.data
 
 
 def test_prevent_booking_more_than_competition_capacity(client):
@@ -45,7 +45,7 @@ def test_prevent_booking_more_than_competition_capacity(client):
     }, follow_redirects=True)
     comp['numberOfPlaces'] = str(initial_places)
     assert response.status_code == 200
-    assert b"Not enough places available in this competition" in response.data
+    assert "pas assez de places disponibles".encode('utf-8') in response.data
 
 
 def test_prevent_booking_negative_places(client):
@@ -55,7 +55,7 @@ def test_prevent_booking_negative_places(client):
         'places': '-3'
     }, follow_redirects=True)
     assert response.status_code == 200
-    assert b"Please enter a positive number of places" in response.data
+    assert "nombre de places positif".encode('utf-8') in response.data
 
 
 def test_prevent_booking_zero_places(client):
@@ -65,7 +65,7 @@ def test_prevent_booking_zero_places(client):
         'places': '0'
     }, follow_redirects=True)
     assert response.status_code == 200
-    assert b"Please enter a positive number of places" in response.data
+    assert "nombre de places positif".encode('utf-8') in response.data
 
 
 def test_prevent_booking_non_integer_places(client):
@@ -75,7 +75,7 @@ def test_prevent_booking_non_integer_places(client):
         'places': 'not_a_number'
     }, follow_redirects=True)
     assert response.status_code == 200
-    assert b"Invalid number of places" in response.data
+    assert "Nombre de places demandé invalide".encode('utf-8') in response.data
 
 
 def test_cannot_access_booking_for_full_competition(client):
@@ -85,7 +85,7 @@ def test_cannot_access_booking_for_full_competition(client):
     response = client.get('/book/Winter Championship/Simply Lift', follow_redirects=True)
     comp['numberOfPlaces'] = initial_places
     assert response.status_code == 200
-    assert b"This competition is full" in response.data
+    assert "Cette compétition est complète".encode('utf-8') in response.data
 
 
 def test_cannot_purchase_places_for_full_competition(client):
@@ -99,4 +99,4 @@ def test_cannot_purchase_places_for_full_competition(client):
     }, follow_redirects=True)
     comp['numberOfPlaces'] = initial_places
     assert response.status_code == 200
-    assert b"This competition is full" in response.data
+    assert "Cette compétition est complète".encode('utf-8') in response.data

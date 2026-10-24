@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clubs Points Board | GUDLFT</title>
+    <title>Classement des Points des Clubs | GUDLFT</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -13,23 +13,23 @@
             <span>GÜDLFT</span>
         </a>
         <nav class="nav-links">
-            <a href="{{ url_for('index') }}" class="btn btn-secondary" style="padding: 0.45rem 1rem;">Back to Login</a>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary" style="padding: 0.45rem 1rem;">Retour à la connexion</a>
         </nav>
     </header>
 
     <main class="container">
         <div class="page-header">
-            <h1 class="page-title">Clubs Points Summary</h1>
-            <p class="page-subtitle">Public, read-only scoreboard displaying real-time points available for all registered clubs.</p>
+            <h1 class="page-title">Tableau Récapitulatif des Points des Clubs</h1>
+            <p class="page-subtitle">Tableau de bord public en lecture seule affichant en direct les points disponibles pour tous les clubs enregistrés.</p>
         </div>
 
         <div class="table-wrapper">
             <table class="custom-table">
                 <thead>
                     <tr>
-                        <th style="width: 80px;">Rank</th>
-                        <th>Club Name</th>
-                        <th style="text-align: right;">Points Available</th>
+                        <th style="width: 80px;">Rang</th>
+                        <th>Nom du Club</th>
+                        <th style="text-align: right;">Points Disponibles</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,12 +50,12 @@
         </div>
 
         <div style="text-align: center; margin-top: 2rem;">
-            <a href="{{ url_for('index') }}" class="btn btn-primary">&larr; Back to Login</a>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">&larr; Retour à la connexion</a>
         </div>
     </main>
 
     <footer class="footer">
-        <p>&copy; 2026 GÜDLFT Weightlifting Association. All rights reserved.</p>
+        <p>&copy; 2026 Association d'Haltérophilie GÜDLFT. Tous droits réservés.</p>
     </footer>
 </body>
 </html>
