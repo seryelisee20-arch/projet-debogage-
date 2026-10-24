@@ -1,10 +1,21 @@
 def test_points_deduction_on_successful_booking(client):
-    # She Lifts starts with 12 points, Spring Festival starts with places
-    # Let's test booking 3 places
+    # Simply Lift starts with 13 points, Spring Festival has places
     response = client.post('/purchasePlaces', data={
-        'club': 'She Lifts',
+        'club': 'Simply Lift',
         'competition': 'Spring Festival',
         'places': '3'
     }, follow_redirects=True)
     assert response.status_code == 200
-    assert b"Points available: 9" in response.data
+    assert b"Points available: 10" in response.data
+
+
+def test_prevent_booking_more_places_than_available_points(client):
+    # Iron Temple has 4 points. Attempting to book 6 places should fail.
+    response = client.post('/purchasePlaces', data={
+        'club': 'Iron Temple',
+        'competition': 'Spring Festival',
+        'places': '6'
+    }, follow_redirects=True)
+    assert response.status_code == 200
+    assert b"You do not have enough points" in response.data
+    assert b"Points available: 4" in response.data
